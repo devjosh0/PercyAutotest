@@ -20,5 +20,26 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Run Cypress tests on hosted app
-        run: npx cypress run 
+      - name: Run Cypress tests with Allure plugin
+        run: |
+          npx cypress run --env allure=true
+          npx allure generate allure-results --clean -o allure-report
+
+      - name: Upload Allure Report as artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: allure-report
+          path: allure-report
+
+      - name: Send report notification to Slack
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        run: |
+          STATUS="passed"
+          if [ $? -ne 0 ]; then
+            STATUS="failed"
+          fi
+          curl -X POST -H 'Content-type: application/json' \
+          --data "{
+            \"text\": \"🧪 Cypress tests have *$STATUS* on branch *$GITHUB_REF_NAME*.\n<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|View report/artifacts>\"
+          }" $SLACK_WEBHOOK_URL
