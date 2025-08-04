@@ -1,12 +1,11 @@
 describe('template spec', () => {
   it('passes', () => {
-    cy.visit('https://amalitech-website-web.vercel.app/testing-space')
-    cy.url().should('include', 'testing-space')
-   cy.document().percySnapshot('Docs');
+    cy.visit('https://staging.amt-website.amalitech-dev.net/automation-testing2')
+   // cy.url().should('include', 'testing-space')
    
-   cy.get('section.w-full.text-white.py-6.px-2xl.md\\:px-5.bg-white').should('be.visible');
-cy.percySnapshot('Block Quote', {
-  scope: 'section.w-full.text-white.py-6.px-2xl.md\\:px-5.bg-white'
+   //cy.get('.module-contents > :nth-child(2)').should('be.visible');
+cy.percySnapshot('footer', {
+  scope: '.main-content > :nth-child(3)'
 });
 
   })
