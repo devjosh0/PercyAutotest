@@ -1,1 +1,1 @@
-"# PercyAutotest is nice" 
+"# PercyAutotest is good" 
